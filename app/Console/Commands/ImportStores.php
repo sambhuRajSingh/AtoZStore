@@ -67,10 +67,15 @@ class ImportStores extends Command
         $this->import()->save();
     }
 
+    /**
+     * Import the csv row into the array.
+     *
+     * @return $this
+     */
     private function import()
     {
-        $csv = Reader::createFromPath(base_path() . $this->path, 'r');
-        $csv->setHeaderOffset(0);
+        $csv = Reader::createFromPath(base_path() . $this->path, 'r')
+            ->setHeaderOffset(0);
 
         $records = (new Statement())->process($csv);  
 
@@ -90,6 +95,11 @@ class ImportStores extends Command
         return $this;
     }
 
+    /**
+     * Persist csv record into sales table.
+     *
+     * @return $this
+     */
     private function save()
     {
         if (empty($this->salesRecords)) {
@@ -100,7 +110,7 @@ class ImportStores extends Command
             try{
                 \App\Store::insert($record);
             } catch(\Exception $e) {
-                \Log::warning('Error: Inserting Record. Skip the record.');
+                \Log::warning('Error: Inserting Record. Skip the record. Error Message : ' . $e->getMessage());
                 continue;
             }
         }
