@@ -11,7 +11,7 @@ class ImportTransactions extends Command
      *
      * @var string
      */
-    protected $signature = 'command:import-transactions';
+    protected $signature = 'import:transactions';
 
     /**
      * The console command description.
