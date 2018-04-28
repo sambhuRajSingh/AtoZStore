@@ -14,11 +14,10 @@ class CreateStoresTable extends Migration
     public function up()
     {
         Schema::create('stores', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 50);
+            $table->integer('store_id')->unsigned()->unique();
+            $table->string('name', 50)->unique();
             $table->string('address', 255);
-            $table->string('postcode', 9);
-            $table->timestamps();
+            $table->string('postcode', 9);            
         });
     }
 

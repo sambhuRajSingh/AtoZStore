@@ -22,7 +22,7 @@ class CreateTransactionsTable extends Migration
         });
 
         Schema::table('transactions', function($table) {
-            $table->foreign('store_id')->references('id')->on('stores');
+            $table->foreign('store_id')->references('store_id')->on('stores')->onDelete('cascade');
         });
     }
 
