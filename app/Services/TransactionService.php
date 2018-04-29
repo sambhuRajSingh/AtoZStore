@@ -6,6 +6,7 @@ use App\Transaction;
 use Carbon\Carbon;
 use Exception;
 use Log;
+use Illuminate\Http\Response;
 
 class TransactionService
 {
@@ -33,12 +34,12 @@ class TransactionService
     {
         if ($this->transactionById($transaction['transaction_id'])) {
             Log::warning('Error: Transaction already exists!');
-            return false;
+            return Response::HTTP_CONFLICT;
         }
 
         $this->transaction->create($transaction);
 
-        return true;
+        return Response::HTTP_CREATED;
     }    
 
     /**
@@ -48,10 +49,14 @@ class TransactionService
      */
     public function refund($transactionId)
     {
+        $numberOfTransactions = $this->transactionById($transactionId)->whereTransactionId($transactionId)->count();
+
+        if ($numberOfTransactions > 1) {
+            return false;
+        }
+
         try {
-            $transaction = $this->transaction
-                            ->whereTransactionId($transactionId)
-                            ->first();
+            $transaction = $this->transactionById($transactionId);                            
 
             $amount = $transaction->total_amount;
 
