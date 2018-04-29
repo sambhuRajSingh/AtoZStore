@@ -57,22 +57,5 @@ class TransactionRefundController extends Controller
                 );
                 break;
         }
-
-        // return response()->json(
-        //         $this->transactionService->refund($request->transaction_id),
-        //         409
-        //     );
-
-        // if (!$this->transactionService->refund($request->transaction_id)) {
-        //     return response()->json(
-        //         'Unable to refund transaction.',
-        //         409
-        //     );            
-        // }
-
-        // return response()->json(
-        //     'Transaction Refunded',
-        //     201
-        // );
     }    
 }
