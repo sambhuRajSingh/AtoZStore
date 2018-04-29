@@ -49,13 +49,13 @@ class TransactionService
      */
     public function refund($transactionId)
     {
-        $numberOfTransactions = $this->transactionById($transactionId)->whereTransactionId($transactionId)->count();
-
-        if ($numberOfTransactions > 1) {
-            return false;
-        }
-
         try {
+            $numberOfTransactions = $this->transaction->whereTransactionId($transactionId)->count();
+
+            if ($numberOfTransactions > 1) {
+                return Response::HTTP_CONFLICT;
+            }
+
             $transaction = $this->transactionById($transactionId);                            
 
             $amount = $transaction->total_amount;
@@ -66,10 +66,10 @@ class TransactionService
 
             $refundTransaction->save();
 
-            return true;
+            return Response::HTTP_CREATED;
         } catch (Exception $e) {
             Log::warning('Error: Transaction Refund Failed. Message: ' . $e->getMessage());
-            return false;
+            return Response::HTTP_UNPROCESSABLE_ENTITY;
         } 
     }
 
