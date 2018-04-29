@@ -14,7 +14,7 @@ class CreateTransactionsTable extends Migration
     public function up()
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->increments('transaction_id');
+            $table->integer('transaction_id')->unsigned();
             $table->integer('store_id')->unsigned();
             $table->decimal('total_amount', 5, 2);
             $table->enum('currency', ['GBP', 'USD', 'EUR']);
